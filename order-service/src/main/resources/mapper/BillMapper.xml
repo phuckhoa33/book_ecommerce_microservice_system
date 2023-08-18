@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.orderservice.mapper.BillMapper">
+    <resultMap id="billResultMap"
+        type="com.project.orderservice.model.Bill"
+    >
+        <result column="ID" property="id"></result>
+		<result column="price" property="price"></result>
+		<result column="userid" property="userid"></result>
+        <result column="payment" property="payment"></result>
+		<result column="created_at" property="created_at"></result>
+		<result column="updated_at" property="updated_at"></result>
+    </resultMap>
+
+    <select id="getAllBills" resultMap="billResultMap">
+        SELECT  u.id,
+                u.price,
+                u.userid,
+                u.payment,
+                u.created_at
+        FROM bill u 
+        WHERE u.userid = #{userid}
+    </select>
+
+    <select id="getBill">
+        SELECT u.id,
+                u.price,
+                u.userid,
+                u.payment,
+                u.created_at
+
+        FROM bill u
+        WHERE u.id=#{billid} and u.userid=#{userid}
+    </select>
+
+    <insert id="paidBill">
+		INSERT INTO bill (
+		        id,
+                price,
+                userid,
+                payment
+		) VALUES (
+		        #{id},
+                #{price},
+                #{userid},
+                #{payment}
+
+		)
+
+
+
+	</insert>
+
+    
+</mapper>

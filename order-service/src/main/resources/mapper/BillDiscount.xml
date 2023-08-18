@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.orderservice.mapper.BillDiscountMapper">
+    <resultMap id="billDiscountResultMap"
+        type="com.project.orderservice.model.BillDiscount"
+    >
+        <result column="ID" property="id"></result>
+		<result column="discountid" property="discountid"></result>
+		<result column="billid" property="billid"></result>
+    </resultMap>
+
+    <select id="getBillDiscount" resultMap="billDiscountResultMap">
+        SELECT  u.id,
+                u.discountid,
+                u.billid
+        FROM billDiscount u 
+        WHERE u.id = #{billdiscountid}
+    </select>
+
+    <insert id="createBillDiscount">
+		INSERT INTO billDiscount (
+		        id,
+                discountid,
+                billid
+		) VALUES (
+		        #{id},
+                #{discountid},
+                #{billid}
+
+		)
+
+
+
+	</insert>
+
+    
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.orderservice.mapper.BillItemMapper">
+    <resultMap id="billItemResultMap"
+        type="com.project.orderservice.model.BillItem"
+    >
+        <result column="ID" property="id"></result>
+		<result column="bookid" property="bookid"></result>
+		<result column="billid" property="billid"></result>
+        <result column="quantity" property="quantity"></result>
+    </resultMap>
+
+    <select id="getBillItems" resultMap="billItemResultMap">
+        SELECT  u.id,
+                u.bookid,
+                u.billid,
+                u.quantity
+        FROM billItem u 
+        WHERE u.id = #{billitemid}
+    </select>
+
+    <insert id="createBillItem">
+		INSERT INTO billItem (
+		        id,
+                bookid,
+                billid,
+                quantity
+		) VALUES (
+		        #{id},
+                #{bookid},
+                #{billid},
+                #{quantity}
+
+		)
+
+
+
+	</insert>
+
+    
+</mapper>
