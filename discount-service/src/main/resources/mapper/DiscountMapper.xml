@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.discountservice.mapper.DiscountMapper">
+    <resultMap id="discountResultMap"
+        type="com.project.discountservice.model.Discount"
+    >
+        <result column="ID" property="id"></result>
+		<result column="start_date" property="start_date"></result>
+		<result column="end_date" property="end_date"></result>
+        <result column="percent" property="percent"></result>
+		<result column="title" property="title"></result>
+    </resultMap>
+
+    <select id="getAllDiscounts" resultMap="discountResultMap">
+        SELECT  u.id,
+                u.start_date,
+                u.start_date,
+                u.percent,
+                u.title,
+                u.limit
+        FROM discount u 
+        WHERE 1 = 1
+    </select>
+
+    <select id="getDiscount">
+        SELECT  u.id,
+                u.start_date,
+                u.start_date,
+                u.percent,
+                u.title,
+                u.limit
+        FROM discount u 
+        WHERE u.title=#{title}
+    </select>
+
+    <select id="getDiscountByDiscountid">
+        SELECT  u.id,
+                u.start_date,
+                u.start_date,
+                u.percent,
+                u.title,
+                u.limit
+        FROM discount u 
+        WHERE u.id=#{discountid}
+    </select>
+
+    <insert id="createDiscount">
+		INSERT INTO discount (
+		        id,
+                start_date,
+                end_date,
+                percent,
+                title,
+                `limit`
+		) VALUES (
+		        #{id},
+                #{start_date},
+                #{end_date},
+                #{percent},
+                #{title},
+                #{limit}
+		)
+
+
+
+	</insert>
+
+    
+</mapper>
