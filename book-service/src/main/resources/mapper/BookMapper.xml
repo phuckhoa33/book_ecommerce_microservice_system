@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.bookservice.mapper.BookMapper">
+    <resultMap id="bookResultMap"
+        type="com.project.bookservice.model.Book"
+    >
+        <result column="id" property="id"></result>
+		<result column="title" property="title"></result>
+		<result column="description" property="description"></result>
+		<result column="image" property="image"></result>
+		<result column="price" property="price"></result>
+		<result column="author" property="author"></result>
+		<result column="quantity" property="quantity"></result>
+		<result column="madeby" property="madeby"></result>
+        <result column="publisher" property="publisher"></result>
+		<result column="supplier" property="supplier"></result>
+        <result column="created_at" property="created_at"></result>
+		<result column="updated_at" property="updated_at"></result>
+    </resultMap>
+
+    <select id="getBooks" resultMap="bookResultMap">
+        SELECT  u.id,
+                u.title,
+                u.description,
+                u.image,
+                u.price,
+                u.author,
+                u.quantity,
+                u.madeby,
+                u.publisher,
+                u.supplier,
+                u.created_at,
+                u.updated_at
+        FROM book u 
+        WHERE 1 = 1
+    </select>
+
+
+    <select id="getBook" resultMap="bookResultMap">
+        SELECT  u.id,
+                u.title,
+                u.description,
+                u.image,
+                u.price,
+                u.author,
+                u.quantity,
+                u.madeby,
+                u.publisher,
+                u.supplier
+        FROM book u 
+        WHERE u.title = #{title}
+    </select>
+
+    <select id="getBookDependById" resultMap="bookResultMap">
+        SELECT  u.id,
+                u.title,
+                u.description,
+                u.image,
+                u.price,
+                u.author,
+                u.quantity,
+                u.madeby,
+                u.publisher,
+                u.supplier
+        FROM book u 
+        WHERE u.id = #{id}
+    </select>
+
+    <select id="getBooksDependOnCategory" resultMap="bookResultMap">
+        SELECT  b.id,
+                b.title,
+                b.description,
+                b.image,
+                b.price,
+                b.author,
+                b.quantity,
+                b.madeby,
+                b.publisher,
+                b.supplier,
+                b.created_at
+        FROM bookCategory a 
+        INNER JOIN book b ON a.bookid=b.id
+        WHERE a.categoryid=#{categoryid}
+    </select>
+
+    <select id="getBooksDependOnAuthor" resultMap="bookResultMap">
+        SELECT  a.id,
+                a.title,
+                a.description,
+                a.image,
+                a.price,
+                a.author,
+                a.quantity,
+                a.madeby,
+                a.publisher,
+                a.supplier,
+                a.created_at
+        FROM book a 
+        WHERE a.author=#{author}
+    </select>
+
+    <insert id="createBook">
+		INSERT INTO book (
+		        id,
+                title,
+                description,
+                image,
+                price,
+                author,
+                quantity,
+                madeby,
+                publisher,
+                supplier
+		) VALUES (
+		        #{id},
+                #{title},
+                #{description},
+                #{image},
+                #{price},
+                #{author},
+                #{quantity},
+                #{madeby},
+                #{publisher},
+                #{supplier}
+
+		)
+
+
+
+	</insert>
+
+    <update id='updateBookQuantity'>
+        UPDATE book 
+        SET quantity = #{quantity}
+        WHERE book.id = #{bookid}
+        
+    </update>
+
+    
+</mapper>

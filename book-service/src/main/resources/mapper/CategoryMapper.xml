@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.bookservice.mapper.CategoryMapper">
+    <resultMap id="categoryResultMap"
+        type="com.project.bookservice.model.Category"
+    >
+        <result column="id" property="id"></result>
+		<result column="name" property="name"></result>
+    </resultMap>
+
+    <select id="getCategories" resultMap="categoryResultMap">
+        SELECT  u.id,
+                u.name
+        FROM category u 
+        WHERE 1 = 1
+    </select>
+
+
+    <select id="getCategory" resultMap="categoryResultMap">
+        SELECT  u.id,
+                u.name
+        FROM category u 
+        WHERE u.name = #{name}
+    </select>
+
+    <insert id="createCategory">
+		INSERT INTO category (
+		        id,
+                name
+		) VALUES (
+		        #{id},
+                #{name}
+
+		)
+
+
+
+	</insert>
+
+    
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.bookservice.mapper.BookCategoryMapper">
+    <resultMap id="bookCategoryResultMap"
+        type="com.project.bookservice.model.BookCategory"
+    >
+        <result column="id" property="id"></result>
+		<result column="bookid" property="bookid"></result>
+		<result column="categoryid" property="categoryid"></result>
+    </resultMap>
+
+    <select id="getBookCategories" resultMap="bookCategoryResultMap">
+        SELECT  u.id,
+                u.bookid,
+                u.categoryid
+        FROM bookCategory u 
+        WHERE 1 = 1
+    </select>
+
+
+    <select id="getBookCategory" resultMap="bookCategoryResultMap">
+        SELECT  u.id,
+                u.bookid,
+                u.categoryid
+        FROM bookCategory u 
+        WHERE u.id = #{id}
+    </select>
+
+    <insert id="createBookCategory">
+		INSERT INTO bookCategory (
+		        id,
+                bookid,
+                categoryid
+		) VALUES (
+		        #{id},
+                #{bookid},
+                #{categoryid}
+
+		)
+
+
+
+	</insert>
+
+    
+</mapper>
