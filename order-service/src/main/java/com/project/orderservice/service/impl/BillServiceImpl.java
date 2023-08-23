@@ -6,9 +6,13 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.project.orderservice.dto.BillInputDataDTO;
+import com.project.orderservice.dto.BookGetResultDTO;
+import com.project.orderservice.dto.DiscountGetResultDTO;
 import com.project.orderservice.dto.PaymentEmailDetailsDTO;
+import com.project.orderservice.mapper.BillDiscountMapper;
 import com.project.orderservice.mapper.BillItemMapper;
 import com.project.orderservice.mapper.BillMapper;
 import com.project.orderservice.model.Bill;
@@ -23,6 +27,15 @@ public class BillServiceImpl implements BillService {
 
     @Autowired
     BillItemMapper billItemMapper;
+
+    @Autowired
+    BillDiscountMapper billDiscountMapper;
+
+    @Autowired
+    WebClient bookClient;
+
+    @Autowired
+    WebClient discountClient;
 
     @Override
     public List<Bill> getAllBills(String userid) {
@@ -58,14 +71,15 @@ public class BillServiceImpl implements BillService {
         // create billItems
         CompletableFuture<Void> createNewBillItemFuture = CompletableFuture.runAsync(() -> {
             for (BillItem billItem : billItems) {
-                // Book book = bookMapper.getBookDependById(billItem.getBookid());
-                // if (book == null) {
-                // message[0] = "Book is not exist";
-                // createNewBillFuture.cancel(true);
-                // }
-                // billItem.setId(extraService.createRandomId(10));
-                // billItem.setBillid(billid);
-                // billItemMapper.createBillItem(billItem);
+                BookGetResultDTO book = bookClient.get().uri("/api/book" + billItem.getBookid()).retrieve()
+                        .bodyToMono(BookGetResultDTO.class).block();
+                if (book.getData() == null) {
+                    message[0] = "Book is not exist";
+                    createNewBillFuture.cancel(true);
+                }
+                billItem.setId(createRandomId(10));
+                billItem.setBillid(billid);
+                billItemMapper.createBillItem(billItem);
             }
 
         });
@@ -74,18 +88,20 @@ public class BillServiceImpl implements BillService {
 
         CompletableFuture<Void> createNewBillDiscountFuture = CompletableFuture.runAsync(() -> {
             for (String discount : discountList) {
-                // Discount discountItem = discountMapper.getDiscountByDiscountid(discount);
-                // if (discountItem == null) {
-                // message[0] = "Discount label is invalid";
-                // createNewBillFuture.cancel(true);
-                // createNewBillItemFuture.cancel(true);
-                // return;
-                // }
-                // BillDiscount newBillDiscount = new BillDiscount();
-                // newBillDiscount.setBillid(billid);
-                // newBillDiscount.setDiscountid(discount);
-                // newBillDiscount.setId(createRandomId(10));
-                // billDiscountMapper.createBillDiscount(newBillDiscount);
+                DiscountGetResultDTO discountItem = discountClient.get()
+                        .uri("/api/discount/" + discount).retrieve()
+                        .bodyToMono(DiscountGetResultDTO.class).block();
+                if (discountItem == null) {
+                    message[0] = "Discount label is invalid";
+                    createNewBillFuture.cancel(true);
+                    createNewBillItemFuture.cancel(true);
+                    return;
+                }
+                BillDiscount newBillDiscount = new BillDiscount();
+                newBillDiscount.setBillid(billid);
+                newBillDiscount.setDiscountid(discount);
+                newBillDiscount.setId(createRandomId(10));
+                billDiscountMapper.createBillDiscount(newBillDiscount);
 
             }
 

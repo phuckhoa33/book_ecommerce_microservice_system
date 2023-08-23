@@ -1,0 +1,29 @@
+version: "3"
+services:
+  book-service:
+    build:
+      context: .
+      dockerfile: ./book-service/Dockerfile
+    ports:
+      - "8090:8090"
+
+  authentication-service:
+    build:
+      context: .
+      dockerfile: ./authentication-service/Dockerfile
+    ports:
+      - "8080:8080"
+
+  order-service:
+    build:
+      context: .
+      dockerfile: ./order-service/Dockerfile
+    ports:
+      - "8088:8088"
+
+  discount-service:
+    build:
+      context: .
+      dockerfile: ./discount-service/Dockerfile
+    ports:
+      - "8089:8089"

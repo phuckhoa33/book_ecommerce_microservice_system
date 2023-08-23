@@ -18,7 +18,7 @@ import lombok.Setter;
 public class PaymentEmailDetailsDTO {
     private Bill bill;
     private User user;
-    // private List<Void> bookItems;
+    private List<Void> bookItems;
     // private EmailDetailsDTO emailDetails;
-    // private List<Discount> discountsService;
+    private List<DiscountDTO> discountsService;
 }

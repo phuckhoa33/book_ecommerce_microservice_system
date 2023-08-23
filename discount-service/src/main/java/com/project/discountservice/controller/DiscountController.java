@@ -3,6 +3,7 @@ package com.project.discountservice.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -51,6 +52,25 @@ public class DiscountController {
         try {
 
             List<Discount> data = discountService.getAllDiscounts();
+            result.put("success", true);
+            result.put("message", "Success to call API create book");
+            result.put("data", data);
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", "Fail to call API create book");
+            result.put("data", null);
+            e.printStackTrace();
+        }
+
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("{discountid}")
+    ResponseEntity<?> getDiscount(@Param("discountid") String discountid) {
+        HashMap<String, Object> result = new HashMap<>();
+        try {
+
+            Discount data = discountService.getDiscount(discountid);
             result.put("success", true);
             result.put("message", "Success to call API create book");
             result.put("data", data);
